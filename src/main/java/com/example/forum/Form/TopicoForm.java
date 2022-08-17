@@ -4,6 +4,7 @@ import com.example.forum.model.Curso;
 import com.example.forum.model.Topico;
 import com.example.forum.repository.CursoRepository;
 import com.sun.istack.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -11,6 +12,7 @@ public class TopicoForm {
 
     @NotNull
     @NotEmpty
+    @Length(max = 255, min = 5)
     private String titulo;
     @NotNull
     @NotEmpty

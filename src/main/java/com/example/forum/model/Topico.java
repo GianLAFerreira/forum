@@ -1,5 +1,6 @@
 package com.example.forum.model;
 
+import com.sun.istack.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,8 @@ public class Topico {
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	private UUID id;
 	private String titulo;
+	@NotNull
+	@NotEmpty
 	private String mensagem;
 	private LocalDateTime dataCriacao = LocalDateTime.now();
 	@Enumerated(EnumType.STRING)

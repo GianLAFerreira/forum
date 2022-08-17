@@ -7,6 +7,7 @@ import com.example.forum.dto.TopicoDto;
 import com.example.forum.model.Topico;
 import com.example.forum.repository.CursoRepository;
 import com.example.forum.repository.TopicoRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -40,6 +41,7 @@ public class TopicosController {
     CursoRepository cursoRepository;
 
     @GetMapping
+    @Cacheable(value = "listaDeTopicos")
     public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
                                  @PageableDefault(sort = "dataCriacao", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable paginacao){
 

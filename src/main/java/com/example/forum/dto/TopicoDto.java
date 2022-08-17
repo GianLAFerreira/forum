@@ -18,7 +18,7 @@ public class TopicoDto {
         this.id          = topico.getId();
         this.titulo      = topico.getTitulo();
         this.mensagem    = topico.getMensagem();
-        this.dataCriacao = getDataCriacao();
+        this.dataCriacao = topico.getDataCriacao();
     }
 
     public static List<TopicoDto> converter(List<Topico> topicos) {

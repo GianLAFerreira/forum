@@ -7,6 +7,7 @@ import com.example.forum.dto.TopicoDto;
 import com.example.forum.model.Topico;
 import com.example.forum.repository.CursoRepository;
 import com.example.forum.repository.TopicoRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +57,7 @@ public class TopicosController {
     }
 
     @PostMapping
+    @CacheEvict(value = "listaDeTopicos", allEntries = true)
     public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder builder){
 
         Topico  topico = form.converter(cursoRepository);

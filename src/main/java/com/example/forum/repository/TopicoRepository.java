@@ -13,4 +13,6 @@ public interface TopicoRepository extends CrudRepository<Topico, UUID> {
     List<Topico> findAll();
 
     List<Topico> findByCursoNome(String nomecurso);
+
+    Topico getOne(UUID id);
 }

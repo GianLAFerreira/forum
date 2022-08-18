@@ -1,6 +1,7 @@
 package com.example.forum.config.security;
 
 import com.example.forum.config.security.service.AutenticacaoService;
+import com.example.forum.config.security.service.TokenService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,6 +21,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Inject
     AutenticacaoService autenticacaoService;
 
+    @Inject
+    TokenService tokenService;
+
     @Override
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception{
@@ -36,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(new AutenticacaoViaTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

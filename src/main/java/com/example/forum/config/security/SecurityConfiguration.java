@@ -1,44 +1,37 @@
 package com.example.forum.config.security;
 
 import com.example.forum.config.security.service.AutenticacaoService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.inject.Inject;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
-public class SecurityConfiguration {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Inject
     AutenticacaoService autenticacaoService;
 
-
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests((authz) -> {
-                try {
-                    authz
-                            .antMatchers(HttpMethod.GET,"/topicos").permitAll()
-                            .antMatchers(HttpMethod.GET,"/topicos/*").permitAll()
-                            .anyRequest().authenticated()
-                            .and().formLogin();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            )
-            .httpBasic(withDefaults())
-                .authenticationManager(new CustomAuthenticationManager());
-
-        return http.build();
+            .authorizeHttpRequests()
+                .antMatchers(HttpMethod.GET,"/topicos").permitAll()
+                .antMatchers(HttpMethod.GET,"/topicos/*").permitAll()
+                .antMatchers(HttpMethod.POST,"/auth").permitAll()
+                .anyRequest().authenticated()
+                .and().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
 
+    }
 }

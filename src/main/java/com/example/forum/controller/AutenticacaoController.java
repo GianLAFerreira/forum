@@ -2,6 +2,7 @@ package com.example.forum.controller;
 
 import com.example.forum.Form.LoginForm;
 import com.example.forum.config.security.service.TokenService;
+import com.example.forum.dto.TokenDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +27,7 @@ public class AutenticacaoController {
     TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<?> autenticar(@RequestBody @Valid LoginForm form){
+    public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm form){
         UsernamePasswordAuthenticationToken dadosLogin = form.converter();
 
         try {
@@ -36,7 +37,7 @@ public class AutenticacaoController {
 
             System.out.println(token);
 
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(new TokenDto(token, "Bearer"));
         }catch (AuthenticationException e){
 
             return ResponseEntity.badRequest().build();
